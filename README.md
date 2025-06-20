@@ -1,16 +1,13 @@
-# Prediksi_Minat_Bakat_Siswa
-# Prediksi Minat Bakat Siswa
-
 Aplikasi berbasis Streamlit untuk memprediksi minat dan bakat siswa berdasarkan data seperti nilai rata-rata, gaya belajar, kegiatan favorit, dan hasil tes kepribadian.
 
-## 🚀 Fitur
+### 🚀 Fitur
 
 - Tampilan analisis dari input file CSV data siswa
 - Prediksi minat dan bakat menggunakan algoritma naive bayes
 - Visualisasi hasil prediksi
 - Tampilan interaktif menggunakan Streamlit
 
-## 🛠️ Teknologi
+### 🛠️ Teknologi
 
 - Python
 - Streamlit
@@ -18,7 +15,7 @@ Aplikasi berbasis Streamlit untuk memprediksi minat dan bakat siswa berdasarkan 
 - Scikit-learn (jika digunakan)
 - Matplotlib / Plotly (opsional)
 
-## 📦 Cara Menjalankan (Local)
+### 📦 Cara Menjalankan (Local)
 
 1. Clone repo ini:
    ```bash
