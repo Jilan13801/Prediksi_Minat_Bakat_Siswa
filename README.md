@@ -1,3 +1,5 @@
+# Prediksi Minat Bakat Siswa
+
 Aplikasi berbasis Streamlit untuk memprediksi minat dan bakat siswa berdasarkan data seperti nilai rata-rata, gaya belajar, kegiatan favorit, dan hasil tes kepribadian.
 
 ### 🚀 Fitur
