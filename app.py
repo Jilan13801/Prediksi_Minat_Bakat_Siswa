@@ -44,6 +44,14 @@ st.sidebar.title("🎯 Menu")
 menu = st.sidebar.radio("Pilih Halaman", ["📊 Analisis Data", "🧠 Prediksi Siswa"])
 st.sidebar.caption(f"🧾 Halaman Aktif: {menu}")
 
+# Deteksi perubahan halaman dan paksa refresh
+if "last_menu" not in st.session_state:
+    st.session_state.last_menu = menu
+
+if st.session_state.last_menu != menu:
+    st.session_state.last_menu = menu
+    st.experimental_rerun()
+
 # --- 📊 ANALISIS DATA ---
 if menu == "📊 Analisis Data":
     st.title("📊 Analisis Data Minat & Bakat Siswa")
