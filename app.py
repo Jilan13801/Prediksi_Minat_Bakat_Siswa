@@ -8,8 +8,18 @@ from sklearn.metrics import accuracy_score, classification_report
 
 st.set_page_config(page_title="Prediksi Minat & Bakat", page_icon="🎓", layout="wide")
 
+# --- (Opsional) CSS pelembut padding layout ---
+st.markdown("""
+    <style>
+        .block-container {
+            padding-top: 1rem;
+            padding-bottom: 2rem;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
 # -- Render fix (untuk sidebar toggle) --
-st.empty()  # Memicu re-render ringan agar layout tidak terpotong
+st.empty()
 
 # --- Load & Encode Data ---
 @st.cache_data
@@ -43,6 +53,20 @@ laporan_klasifikasi = classification_report(y_test, y_pred, output_dict=True)
 st.sidebar.title("🎯 Menu")
 menu = st.sidebar.radio("Pilih Halaman", ["📊 Analisis Data", "🧠 Prediksi Siswa"])
 st.sidebar.caption(f"🧾 Halaman Aktif: {menu}")
+
+# --- Rerun Aman untuk Layout Penuh ---
+if "last_menu" not in st.session_state:
+    st.session_state.last_menu = menu
+if "has_rerun" not in st.session_state:
+    st.session_state.has_rerun = False
+
+if menu != st.session_state.last_menu and not st.session_state.has_rerun:
+    st.session_state.last_menu = menu
+    st.session_state.has_rerun = True
+    st.rerun()
+else:
+    st.session_state.last_menu = menu
+    st.session_state.has_rerun = False
 
 # --- 📊 ANALISIS DATA ---
 if menu == "📊 Analisis Data":
