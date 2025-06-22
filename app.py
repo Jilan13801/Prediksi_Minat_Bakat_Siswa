@@ -1,13 +1,15 @@
 import streamlit as st
 import pandas as pd
-import seaborn as sns
-import matplotlib.pyplot as plt
+import plotly.express as px
 from sklearn.preprocessing import LabelEncoder
 from sklearn.naive_bayes import CategoricalNB
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, classification_report
 
 st.set_page_config(page_title="Prediksi Minat & Bakat", page_icon="🎓", layout="wide")
+
+# -- Render fix (untuk sidebar toggle) --
+st.empty()  # Memicu re-render ringan agar layout tidak terpotong
 
 # --- Load & Encode Data ---
 @st.cache_data
@@ -40,6 +42,7 @@ laporan_klasifikasi = classification_report(y_test, y_pred, output_dict=True)
 # --- Sidebar ---
 st.sidebar.title("🎯 Menu")
 menu = st.sidebar.radio("Pilih Halaman", ["📊 Analisis Data", "🧠 Prediksi Siswa"])
+st.sidebar.caption(f"🧾 Halaman Aktif: {menu}")
 
 # --- 📊 ANALISIS DATA ---
 if menu == "📊 Analisis Data":
@@ -50,16 +53,25 @@ if menu == "📊 Analisis Data":
 
     with col1:
         st.subheader("Jumlah Siswa per Minat & Bakat")
-        fig1, ax1 = plt.subplots()
-        sns.countplot(x="Minat_Bakat", data=df_raw, palette="pastel", ax=ax1)
-        plt.xticks(rotation=15)
-        st.pyplot(fig1)
+        fig1 = px.histogram(
+            df_raw,
+            x="Minat_Bakat",
+            color="Minat_Bakat",
+            color_discrete_sequence=px.colors.qualitative.Pastel
+        )
+        fig1.update_layout(showlegend=False)
+        st.plotly_chart(fig1, use_container_width=True)
 
     with col2:
         st.subheader("Distribusi Gaya Belajar")
-        fig2, ax2 = plt.subplots()
-        sns.countplot(x="Gaya_Belajar", data=df_raw, palette="muted", ax=ax2)
-        st.pyplot(fig2)
+        fig2 = px.histogram(
+            df_raw,
+            x="Gaya_Belajar",
+            color="Gaya_Belajar",
+            color_discrete_sequence=px.colors.qualitative.Set2
+        )
+        fig2.update_layout(showlegend=False)
+        st.plotly_chart(fig2, use_container_width=True)
 
     st.markdown("---")
     st.subheader("📈 Evaluasi Model (Naive Bayes)")
