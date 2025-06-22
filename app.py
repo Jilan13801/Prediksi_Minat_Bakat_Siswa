@@ -4,6 +4,8 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import LabelEncoder
 from sklearn.naive_bayes import CategoricalNB
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, classification_report
 
 st.set_page_config(page_title="Prediksi Minat & Bakat", page_icon="🎓", layout="wide")
 
@@ -21,11 +23,19 @@ def load_data():
 
 df_raw, df_encoded, le_dict = load_data()
 
-# Train model
+# Split data
 X = df_encoded.drop("Minat_Bakat", axis=1)
 y = df_encoded["Minat_Bakat"]
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Train model
 model = CategoricalNB()
-model.fit(X, y)
+model.fit(X_train, y_train)
+
+# Evaluasi model
+y_pred = model.predict(X_test)
+akurasi = accuracy_score(y_test, y_pred)
+laporan_klasifikasi = classification_report(y_test, y_pred, output_dict=True)
 
 # --- Sidebar ---
 st.sidebar.title("🎯 Menu")
@@ -50,6 +60,13 @@ if menu == "📊 Analisis Data":
         fig2, ax2 = plt.subplots()
         sns.countplot(x="Gaya_Belajar", data=df_raw, palette="muted", ax=ax2)
         st.pyplot(fig2)
+
+    st.markdown("---")
+    st.subheader("📈 Evaluasi Model (Naive Bayes)")
+    st.write(f"**Akurasi Model:** {akurasi:.2%}")
+
+    with st.expander("Lihat Detail Laporan Klasifikasi"):
+        st.dataframe(pd.DataFrame(laporan_klasifikasi).transpose())
 
     st.markdown("---")
     st.subheader("Data Mentah")
